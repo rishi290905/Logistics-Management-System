@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logistics Management System | Multi-Database Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- ====================================================================
+         SIDEBAR NAVIGATION
+         ==================================================================== -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon"><i class="fa-solid fa-truck-fast"></i></div>
+            <div>
+                <h2>LogistiCore</h2>
+                <span>Database IMS v2.0</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-title">Core Operations</div>
+            <a class="nav-item active" data-tab="tab-overview">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Executive Overview</span>
+            </a>
+            <a class="nav-item" data-tab="tab-relational">
+                <i class="fa-solid fa-database"></i>
+                <span>Relational DBMS (11 Entities)</span>
+            </a>
+            <a class="nav-item" data-tab="tab-transactions">
+                <i class="fa-solid fa-arrows-spin"></i>
+                <span>ACID Transactions</span>
+            </a>
+
+            <div class="nav-section-title">Advanced Data Engines</div>
+            <a class="nav-item" data-tab="tab-nosql">
+                <i class="fa-solid fa-leaf"></i>
+                <span>NoSQL & Tracking (MongoDB)</span>
+            </a>
+            <a class="nav-item" data-tab="tab-graph">
+                <i class="fa-solid fa-circle-nodes"></i>
+                <span>Graph & Routing (Neo4j)</span>
+            </a>
+            <a class="nav-item" data-tab="tab-cache">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Caching Layer (Redis)</span>
+            </a>
+
+            <div class="nav-section-title">Academic & Architecture</div>
+            <a class="nav-item" data-tab="tab-architecture">
+                <i class="fa-solid fa-cloud"></i>
+                <span>Cloud & AWS Architecture</span>
+            </a>
+            <a class="nav-item" data-tab="tab-viva">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>Viva Examination Hub</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div style="font-weight: 600; color: #fff;">DBMS Final Project</div>
+            <div style="font-size: 11px; margin-top: 2px;">Polyglot Persistence Architecture</div>
+        </div>
+    </aside>
+
+    <!-- ====================================================================
+         MAIN CONTENT WRAPPER
+         ==================================================================== -->
+    <div class="main-wrapper">
+        <!-- Top Navbar -->
+        <header class="top-navbar">
+            <div class="page-title">
+                <h1 id="currentTabTitle">Executive Overview</h1>
+                <p id="currentTabDesc">Real-time logistics analytics and cross-engine operations</p>
+            </div>
+
+            <div class="top-nav-actions">
+                <div class="role-switcher">
+                    <i class="fa-solid fa-user-shield" style="color: var(--primary);"></i>
+                    <span style="font-size: 12px; font-weight: 600; color: var(--text-muted);">Role:</span>
+                    <select id="userRoleSelect" onchange="switchAppRole(this.value)">
+                        <option value="admin" selected>Admin (Full Access)</option>
+                        <option value="logistics_manager">Logistics Manager</option>
+                        <option value="dispatcher">Fleet Dispatcher</option>
+                        <option value="delivery_agent">Delivery Agent</option>
+                        <option value="customer">Customer</option>
+                    </select>
+                </div>
+                <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> System Healthy</span>
+            </div>
+        </header>
+
+        <!-- Body Content -->
+        <main class="content-body">
+
+            <!-- ================================================================
+                 TAB 1: EXECUTIVE OVERVIEW
+                 ================================================================ -->
+            <section id="tab-overview" class="tab-pane active">
+                <!-- KPI Metrics -->
+                <div class="card-grid-4">
+                    <div class="kpi-card">
+                        <div class="kpi-info">
+                            <p>Active Shipments</p>
+                            <h3 id="kpiActiveShipments">4</h3>
+                        </div>
+                        <div class="kpi-icon" style="background: #eff6ff; color: #2563eb;">
+                            <i class="fa-solid fa-box"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-info">
+                            <p>Total Revenue (INR)</p>
+                            <h3 id="kpiRevenue">₹2,66,200</h3>
+                        </div>
+                        <div class="kpi-icon" style="background: #f0fdf4; color: #16a34a;">
+                            <i class="fa-solid fa-indian-rupee-sign"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-info">
+                            <p>Warehouses Active</p>
+                            <h3 id="kpiWarehouses">4</h3>
+                        </div>
+                        <div class="kpi-icon" style="background: #fef3c7; color: #d97706;">
+                            <i class="fa-solid fa-warehouse"></i>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-info">
+                            <p>Cache Hit Ratio</p>
+                            <h3 id="kpiCacheHitRatio">85.4%</h3>
+                        </div>
+                        <div class="kpi-icon" style="background: #f3e8ff; color: #9333ea;">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two-Column Section: Active Shipments & NoSQL Disruptions -->
+                <div class="card-grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2><i class="fa-solid fa-truck" style="color: var(--primary);"></i> Live Active Shipments (SQL View)</h2>
+                                <p>Rendered from relational view: <code>v_active_shipments</code></p>
+                            </div>
+                            <button class="btn btn-outline" onclick="loadOverviewData()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table" id="overviewShipmentsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Tracking #</th>
+                                            <th>Order #</th>
+                                            <th>Customer</th>
+                                            <th>Origin Hub</th>
+                                            <th>Status</th>
+                                            <th>Agent</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dynamically loaded -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2><i class="fa-solid fa-triangle-exclamation" style="color: var(--warning);"></i> Dynamic Logistics Alerts (NoSQL)</h2>
+                                <p>Unstructured incidents from MongoDB: <code>dynamic_logistics_events</code></p>
+                            </div>
+                        </div>
+                        <div class="card-body" id="overviewAlertsContainer">
+                            <!-- Dynamically loaded alert cards -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Concept Callout Card -->
+                <div class="card" style="background: linear-gradient(135deg, #1e293b, #0f172a); color: #fff;">
+                    <div class="card-body">
+                        <h3 style="font-size: 16px; margin-bottom: 8px;"><i class="fa-solid fa-diagram-project" style="color: var(--accent);"></i> Multi-Model Polyglot Architecture In Action</h3>
+                        <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6;">
+                            This platform solves real-world logistics challenges by pairing each workload with its optimal database paradigm:
+                            <strong>Relational (SQL)</strong> guarantees ACID transactions and financial consistency;
+                            <strong>NoSQL (MongoDB)</strong> captures polymorphic IoT tracking telemetry and time-series history;
+                            <strong>Graph (Neo4j)</strong> calculates shortest transit paths through interstate logistics corridors; and
+                            <strong>In-Memory Cache (Redis)</strong> offloads read pressure for instant catalog and inventory access.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================================================================
+                 TAB 2: RELATIONAL DATABASE MANAGEMENT (11 ENTITIES & SQL CONSOLE)
+                 ================================================================ -->
+            <section id="tab-relational" class="tab-pane">
+                <!-- Subtabs for the 11 entities + Views + SQL Console -->
+                <div class="subtabs-bar">
+                    <button class="subtab-btn active" onclick="switchRelationalSubtab('customers')">Customers</button>
+                    <button class="subtab-btn" onclick="switchRelationalSubtab('products')">Products</button>
+                    <button class="subtab-btn" onclick="switchRelationalSubtab('inventory')">Inventory</button>
+                    <button class="subtab-btn" onclick="switchRelationalSubtab('warehouses')">Warehouses</button>
+                    <button class="subtab-btn" onclick="switchRelationalSubtab('orders')">Orders</button>
+                    <button class="subtab-btn" onclick="switchRelationalSubtab('shipments')">Shipments</button>
+                    <button class="subtab-btn" onclick="switchRelationalSubtab('delivery_agents')">Delivery Agents</button>
+                    <button class="subtab-btn" onclick="switchRelationalSubtab('vehicles')">Vehicles</button>
+                    <button class="subtab-btn" onclick="switchRelationalSubtab('routes')">Routes</button>
+                    <button class="subtab-btn" onclick="switchRelationalSubtab('suppliers')">Suppliers</button>
+                    <button class="subtab-btn" onclick="switchRelationalSubtab('payments')">Payments</button>
+                    <button class="subtab-btn" onclick="switchRelationalSubtab('views')">Relational Views</button>
+                    <button class="subtab-btn" onclick="switchRelationalSubtab('sql_console')">Interactive SQL Console</button>
+                </div>
+
+                <!-- Entity Table Container -->
+                <div class="card" id="entityTableCard">
+                    <div class="card-header">
+                        <div>
+                            <h2 id="relationalEntityTitle">Customers Management</h2>
+                            <p id="relationalEntityDesc">Relational records enforcing Foreign Keys and CHECK constraints</p>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-primary" id="addEntityBtn" onclick="openAddEntityModal()"><i class="fa-solid fa-plus"></i> New Record</button>
+                            <button class="btn btn-outline" onclick="refreshCurrentEntity()"><i class="fa-solid fa-rotate"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="data-table" id="relationalDataTable">
+                                <thead>
+                                    <!-- Dynamic Columns -->
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive SQL Console Container (Hidden by default, shown when subtab selected) -->
+                <div class="card" id="sqlConsoleCard" style="display: none;">
+                    <div class="card-header">
+                        <div>
+                            <h2><i class="fa-solid fa-terminal" style="color: var(--primary);"></i> SQL Query Console & Normalization Demonstrator</h2>
+                            <p>Execute SELECT, JOIN, GROUP BY, and Views against the relational engine</p>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div style="margin-bottom: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button class="btn btn-outline" style="font-size: 11px;" onclick="loadSampleSQL('SELECT * FROM products JOIN suppliers ON products.supplier_id = suppliers.id')">Product-Supplier JOIN</button>
+                            <button class="btn btn-outline" style="font-size: 11px;" onclick="loadSampleSQL('SELECT * FROM v_active_shipments')">View: v_active_shipments</button>
+                            <button class="btn btn-outline" style="font-size: 11px;" onclick="loadSampleSQL('SELECT * FROM v_warehouse_stock_alerts WHERE stock_health_status != \'ADEQUATE\'')">Stock Health Alerts</button>
+                            <button class="btn btn-outline" style="font-size: 11px;" onclick="loadSampleSQL('SELECT * FROM v_customer_order_analytics')">Customer Lifetime Analytics</button>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea id="sqlInput" class="form-control" rows="4" style="font-family: monospace; font-size: 13px;" placeholder="SELECT * FROM orders WHERE total_amount > 40000;"></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="executeSQLQuery()"><i class="fa-solid fa-play"></i> Execute Query</button>
+
+                        <div style="margin-top: 20px;">
+                            <h4>Query Results:</h4>
+                            <div class="table-responsive" style="margin-top: 8px;">
+                                <table class="data-table" id="sqlResultTable">
+                                    <thead></thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================================================================
+                 TAB 3: ACID TRANSACTION SIMULATOR
+                 ================================================================ -->
+            <section id="tab-transactions" class="tab-pane">
+                <div class="card-grid-2">
+                    <!-- Left: Transaction Execution Form -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2><i class="fa-solid fa-bolt" style="color: var(--primary);"></i> Order Placement ACID Transaction</h2>
+                                <p>Multi-step atomic order creation with inventory lock and rollback test</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form id="acidTransactionForm" onsubmit="runAcidTransaction(event)">
+                                <div class="form-group">
+                                    <label>Customer</label>
+                                    <select id="txnCustomerId" class="form-control" required>
+                                        <option value="1">Rohit Verma (CUST-001 - Noida)</option>
+                                        <option value="2">Ananya Deshmukh (CUST-002 - Pune)</option>
+                                        <option value="3">Karthik Swaminathan (CUST-003 - Bengaluru)</option>
+                                        <option value="4">Debashish Banerjee (CUST-004 - Howrah)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Origin Fulfillment Warehouse</label>
+                                    <select id="txnWarehouseId" class="form-control" required onchange="filterTxnProducts()">
+                                        <option value="1">WH-DEL-01 (North Zone Mega Hub, Delhi)</option>
+                                        <option value="2">WH-MUM-02 (West Coast Terminal, Mumbai)</option>
+                                        <option value="3">WH-BLR-03 (South Tech Hub, Bengaluru)</option>
+                                        <option value="4">WH-KOL-04 (East Bengal Distribution Center, Kolkata)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Product to Order</label>
+                                    <select id="txnProductId" class="form-control" required>
+                                        <option value="1">SKU-ELEC-001 (IoT Gateway Router - ₹14,500)</option>
+                                        <option value="2">SKU-ELEC-002 (Solar Inverter 5kVA - ₹38,000)</option>
+                                        <option value="3">SKU-AUTO-001 (Brake Disc Assembly - ₹4,850)</option>
+                                        <option value="6">SKU-PHRM-001 (Vaccine Vial Pack - ₹62,000)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Quantity</label>
+                                    <input type="number" id="txnQuantity" class="form-control" min="1" max="500" value="2" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Payment Method</label>
+                                    <select id="txnPaymentMethod" class="form-control">
+                                        <option value="UPI">UPI Instant Pay</option>
+                                        <option value="Credit Card">Credit Card</option>
+                                        <option value="Net Banking">Net Banking</option>
+                                        <option value="Corporate Billing">Corporate Billing</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" style="background: #f8fafc; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                                    <label style="color: var(--danger);"><i class="fa-solid fa-vial"></i> Failure Simulation Test (ACID Rollback Demo)</label>
+                                    <select id="txnSimulateFailure" class="form-control">
+                                        <option value="">Normal Execution (Successful Commit)</option>
+                                        <option value="INSUFFICIENT_STOCK">Simulate Insufficient Stock (Violates Inventory Check Invariant)</option>
+                                        <option value="PAYMENT_GATEWAY_FAILURE">Simulate Payment Gateway Failure (Rolls back Order & Inventory)</option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-play"></i> Execute ACID Transaction</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Right: Step-by-Step Execution Trace & ACID Explanation -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2><i class="fa-solid fa-list-check" style="color: var(--accent);"></i> Real-Time Transaction Trace Log</h2>
+                                <p id="txnResultBadge">Awaiting execution...</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="txnStepLog" class="txn-step-container">
+                                <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
+                                    <i class="fa-solid fa-arrows-spin" style="font-size: 32px; margin-bottom: 12px; color: #cbd5e1;"></i>
+                                    <p>Select order options and click "Execute ACID Transaction" to visualize step-by-step locking, execution, and commit/rollback trace.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACID Theory Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-book-open" style="color: var(--primary);"></i> ACID Principles & Concurrency Control Strategy</h2>
+                    </div>
+                    <div class="card-body card-grid-4" style="margin-bottom: 0;">
+                        <div>
+                            <h4 style="color: var(--primary);"><i class="fa-solid fa-atom"></i> Atomicity</h4>
+                            <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 4px;">
+                                "All or Nothing." If payment fails at Step 7, all earlier operations (Order creation, inventory decrement) are discarded via rollback.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--success);"><i class="fa-solid fa-shield-halved"></i> Consistency</h4>
+                            <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 4px;">
+                                Database moves from one valid state to another. Constraints such as <code>CHECK (quantity_available >= 0)</code> are strictly enforced.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--warning);"><i class="fa-solid fa-lock"></i> Isolation</h4>
+                            <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 4px;">
+                                Serializable & Repeatable Read isolation levels with row locks (<code>FOR UPDATE</code>) prevent Dirty Reads and Lost Updates.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--danger);"><i class="fa-solid fa-hard-drive"></i> Durability</h4>
+                            <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 4px;">
+                                Committed transactions are permanently logged to non-volatile storage (WAL) and survive application crashes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================================================================
+                 TAB 4: NOSQL & SHIPMENT TRACKING (MONGODB)
+                 ================================================================ -->
+            <section id="tab-nosql" class="tab-pane">
+                <div class="card-grid-2">
+                    <!-- Left: Tracking Search & Interactive Timeline -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2><i class="fa-solid fa-timeline" style="color: var(--primary);"></i> Shipment Tracking Timeline (MongoDB)</h2>
+                                <p>Semi-structured BSON document with polymorphic IoT checkpoints</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                                <input type="text" id="nosqlSearchTracking" class="form-control" value="TRK-IN-9812001" placeholder="Enter tracking code (e.g. TRK-IN-9812001)">
+                                <button class="btn btn-primary" onclick="searchNoSQLTracking()"><i class="fa-solid fa-magnifying-glass"></i> Track</button>
+                            </div>
+
+                            <div style="margin-bottom: 12px; display: flex; gap: 6px;">
+                                <button class="btn btn-outline" style="font-size: 11px;" onclick="loadQuickTrack('TRK-IN-9812001')">TRK-IN-9812001 (Electronics)</button>
+                                <button class="btn btn-outline" style="font-size: 11px;" onclick="loadQuickTrack('TRK-IN-9812003')">TRK-IN-9812003 (Cold Chain Pharma)</button>
+                                <button class="btn btn-outline" style="font-size: 11px;" onclick="loadQuickTrack('TRK-IN-9812004')">TRK-IN-9812004 (Delivered POD)</button>
+                            </div>
+
+                            <div id="trackingTimelineContainer" class="tracking-timeline">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Add Checkpoint Event & IoT Telemetry -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2><i class="fa-solid fa-location-crosshairs" style="color: var(--success);"></i> Add Live Checkpoint & Sensor Telemetry</h2>
+                                <p>Appends polymorphic event to MongoDB embedded array</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form id="addCheckpointForm" onsubmit="submitCheckpointEvent(event)">
+                                <div class="form-group">
+                                    <label>Tracking Number</label>
+                                    <input type="text" id="cpTrackingNum" class="form-control" value="TRK-IN-9812001" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Status Update</label>
+                                    <select id="cpStatus" class="form-control">
+                                        <option value="Picked Up">Picked Up</option>
+                                        <option value="In Transit" selected>In Transit</option>
+                                        <option value="Checkpoint Scanned">Checkpoint Scanned</option>
+                                        <option value="Out for Delivery">Out for Delivery</option>
+                                        <option value="Delivered">Delivered</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Checkpoint Location Name</label>
+                                    <input type="text" id="cpLocation" class="form-control" value="Noida Toll Plaza Checkpoint" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Remarks & Driver Notes</label>
+                                    <input type="text" id="cpRemarks" class="form-control" value="Cargo security seal intact. Proceeding to destination.">
+                                </div>
+
+                                <div class="form-group" style="background: #f8fafc; padding: 12px; border-radius: var(--radius-sm);">
+                                    <label><i class="fa-solid fa-microchip" style="color: var(--accent);"></i> IoT Sensor Telemetry (Polymorphic JSON)</label>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                        <input type="number" id="cpTemp" class="form-control" placeholder="Cargo Temp °C (-18)" value="-18.2" step="0.1">
+                                        <input type="number" id="cpSpeed" class="form-control" placeholder="Speed km/h" value="55">
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-success" style="width: 100%;"><i class="fa-solid fa-plus"></i> Append Event to MongoDB</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Raw Document Viewer & NoSQL Explanation -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-code" style="color: var(--accent);"></i> MongoDB Document Structure & Academic Comparison</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="code-box" id="nosqlRawDoc">
+                            // MongoDB BSON Document representation will appear here upon tracking search
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================================================================
+                 TAB 5: GRAPH & ROUTING (NEO4J)
+                 ================================================================ -->
+            <section id="tab-graph" class="tab-pane">
+                <div class="card-grid-2">
+                    <!-- Left: Interactive Canvas Network Graph -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2><i class="fa-solid fa-circle-nodes" style="color: var(--accent);"></i> Logistics Network Topology</h2>
+                                <p>Warehouses, Hubs, Suppliers, Delivery Agents, and Corridors</p>
+                            </div>
+                            <button class="btn btn-outline" onclick="resetGraphCanvas()"><i class="fa-solid fa-crosshairs"></i> Reset View</button>
+                        </div>
+                        <div class="card-body" style="padding: 12px;">
+                            <canvas id="graphCanvas"></canvas>
+                            <div style="display: flex; gap: 14px; margin-top: 10px; font-size: 11.5px; color: var(--text-muted); flex-wrap: wrap;">
+                                <span><i class="fa-solid fa-circle" style="color: #3b82f6;"></i> Warehouse</span>
+                                <span><i class="fa-solid fa-circle" style="color: #10b981;"></i> Delivery Hub</span>
+                                <span><i class="fa-solid fa-circle" style="color: #f59e0b;"></i> Supplier</span>
+                                <span><i class="fa-solid fa-circle" style="color: #8b5cf6;"></i> Customer</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Dijkstra Shortest Route Finder -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2><i class="fa-solid fa-route" style="color: var(--primary);"></i> Dijkstra Optimal Route Finder</h2>
+                                <p>Weighted shortest path calculation across interstate hubs</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form id="dijkstraForm" onsubmit="calculateShortestPath(event)">
+                                <div class="form-group">
+                                    <label>Origin Node</label>
+                                    <select id="routeOrigin" class="form-control" required>
+                                        <option value="WH-DEL-01" selected>WH-DEL-01 (Delhi North Hub)</option>
+                                        <option value="WH-MUM-02">WH-MUM-02 (Mumbai West Terminal)</option>
+                                        <option value="WH-BLR-03">WH-BLR-03 (Bengaluru South Hub)</option>
+                                        <option value="WH-KOL-04">WH-KOL-04 (Kolkata East Center)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Destination Node</label>
+                                    <select id="routeDest" class="form-control" required>
+                                        <option value="HUB-CHE" selected>HUB-CHE (Coromandel Hub, Chennai)</option>
+                                        <option value="HUB-HYD">HUB-HYD (Deccan Hub, Hyderabad)</option>
+                                        <option value="HUB-PUN">HUB-PUN (Chakan Hub, Pune)</option>
+                                        <option value="HUB-NOI">HUB-NOI (Noida Hub)</option>
+                                        <option value="CUST-001">CUST-001 (Rohit Verma - Noida)</option>
+                                        <option value="CUST-003">CUST-003 (Karthik - Bengaluru)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Optimization Criterion</label>
+                                    <select id="routeCriteria" class="form-control">
+                                        <option value="distance" selected>Least Distance (km)</option>
+                                        <option value="duration">Least Transit Duration (mins)</option>
+                                        <option value="toll">Least Highway Toll Cost (INR)</option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-calculator"></i> Compute Shortest Path</button>
+                            </form>
+
+                            <!-- Path Results Container -->
+                            <div id="routeResultsContainer" style="margin-top: 18px; display: none;">
+                                <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px;">
+                                    <h4 style="font-size: 14px; color: var(--dark); margin-bottom: 8px;">Optimal Route Found:</h4>
+                                    <div id="routeMetrics" style="display: flex; gap: 16px; margin-bottom: 12px; font-size: 13px;">
+                                        <!-- Total Distance, Duration, Toll -->
+                                    </div>
+                                    <div id="routeCheckpointsList" style="font-size: 12.5px; line-height: 1.8;">
+                                        <!-- Step by step -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cypher Query Console -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-code-branch" style="color: var(--accent);"></i> Neo4j Cypher Query Simulator</h2>
+                        <p>Execute graph relationship queries</p>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                            <button class="btn btn-outline" style="font-size: 11px;" onclick="loadCypher('MATCH (s:Supplier)-[r:SUPPLIES_TO]->(w:Warehouse) RETURN s, r, w')">Supplier -> Warehouse Paths</button>
+                            <button class="btn btn-outline" style="font-size: 11px;" onclick="loadCypher('MATCH (h:DeliveryHub)-[r:ROUTE_TO]-() RETURN h, COUNT(r) AS Centrality')">Hub Centrality Ranking</button>
+                            <button class="btn btn-outline" style="font-size: 11px;" onclick="loadCypher('MATCH p = shortestPath((origin:Warehouse {code: \'WH-DEL-01\'})-[:ROUTE_TO*]-(dest:DeliveryHub {code: \'HUB-CHE\'})) RETURN p')">Shortest Path Cypher</button>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="cypherInput" class="form-control" rows="3" style="font-family: monospace;">MATCH (s:Supplier)-[r:SUPPLIES_TO]->(w:Warehouse) RETURN s, r, w;</textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="executeCypherQuery()"><i class="fa-solid fa-play"></i> Execute Cypher</button>
+
+                        <div class="code-box" id="cypherResultBox" style="margin-top: 14px;">
+                            // Cypher records will be rendered here
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================================================================
+                 TAB 6: CACHING LAYER (REDIS)
+                 ================================================================ -->
+            <section id="tab-cache" class="tab-pane">
+                <!-- Cache Metrics Cards -->
+                <div class="card-grid-4">
+                    <div class="kpi-card">
+                        <div class="kpi-info">
+                            <p>Cache Hit Count</p>
+                            <h3 id="cacheHits">0</h3>
+                        </div>
+                        <div class="kpi-icon" style="background: #f0fdf4; color: #16a34a;"><i class="fa-solid fa-check-double"></i></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-info">
+                            <p>Cache Miss Count</p>
+                            <h3 id="cacheMisses">0</h3>
+                        </div>
+                        <div class="kpi-icon" style="background: #fef2f2; color: #dc2626;"><i class="fa-solid fa-xmark"></i></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-info">
+                            <p>Cached Keys Active</p>
+                            <h3 id="cacheKeyCount">0</h3>
+                        </div>
+                        <div class="kpi-icon" style="background: #eff6ff; color: #2563eb;"><i class="fa-solid fa-key"></i></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-info">
+                            <p>Cache Invalidation Count</p>
+                            <h3 id="cacheInvalidations">0</h3>
+                        </div>
+                        <div class="kpi-icon" style="background: #fffbeb; color: #d97706;"><i class="fa-solid fa-trash-can"></i></div>
+                    </div>
+                </div>
+
+                <div class="card-grid-2">
+                    <!-- Left: Active Cached Keys with TTL Countdown -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2><i class="fa-solid fa-database" style="color: var(--primary);"></i> Redis Key Inspection & TTL Countdown</h2>
+                                <p>Live view of keys stored in RAM cache with remaining expiration</p>
+                            </div>
+                            <button class="btn btn-danger" onclick="flushAllCache()"><i class="fa-solid fa-broom"></i> Flush All</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table" id="cacheKeysTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Key</th>
+                                            <th>TTL Remaining</th>
+                                            <th>Hits</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dynamically loaded -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Performance Benchmark Simulator -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2><i class="fa-solid fa-gauge-high" style="color: var(--accent);"></i> Redis vs Database Latency Benchmark</h2>
+                                <p>Runs 50 sequential reads to measure speedup and latency offload</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="runCacheBenchmark()"><i class="fa-solid fa-play"></i> Run Test</button>
+                        </div>
+                        <div class="card-body">
+                            <div id="benchmarkResults">
+                                <div style="text-align: center; color: var(--text-muted); padding: 30px 0;">
+                                    <i class="fa-solid fa-stopwatch" style="font-size: 32px; margin-bottom: 10px; color: #cbd5e1;"></i>
+                                    <p>Click "Run Test" to execute real-time comparison between Relational DB disk queries and Redis in-memory cache.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Theory of Cache-Aside Pattern -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-diagram-next" style="color: var(--primary);"></i> Cache-Aside (Lazy Loading) Implementation Pattern</h2>
+                    </div>
+                    <div class="card-body">
+                        <ol style="font-size: 13px; line-height: 1.8; color: var(--text-main); padding-left: 20px;">
+                            <li><strong>Step 1 (Read Request):</strong> Application first queries Redis cache using key (e.g. <code>cache:products:all</code>).</li>
+                            <li><strong>Step 2 (Cache Hit):</strong> If key exists and TTL is valid, returns data in <strong>&lt; 2ms</strong> without touching database.</li>
+                            <li><strong>Step 3 (Cache Miss):</strong> If key is absent or expired, queries relational database (PostgreSQL/MySQL), stores the result in Redis with a <strong>TTL (Time-To-Live)</strong>, and returns data to user.</li>
+                            <li><strong>Step 4 (Mutation Invalidation):</strong> Whenever an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code> occurs in the database, the corresponding cache key is immediately invalidated to prevent stale data.</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================================================================
+                 TAB 7: CLOUD ARCHITECTURE & AWS INTEGRATION
+                 ================================================================ -->
+            <section id="tab-architecture" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2><i class="fa-solid fa-cloud" style="color: var(--accent);"></i> Production Cloud Deployment Architecture (AWS)</h2>
+                            <p>Scalable, cost-effective student-tier design using modern cloud primitives</p>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div style="background: #0f172a; border-radius: var(--radius-md); padding: 24px; color: #fff; margin-bottom: 20px;">
+                            <div style="text-align: center; margin-bottom: 20px;">
+                                <h3 style="color: var(--accent); font-size: 18px;">AWS Production Logistics Architecture</h3>
+                                <p style="font-size: 12px; color: #94a3b8;">High Availability, Read-Write Split, and S3 Document Archival</p>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                                <div style="background: rgba(255,255,255,0.06); padding: 14px; border-radius: var(--radius-sm); border-top: 3px solid #3b82f6;">
+                                    <h4 style="font-size: 13px; color: #60a5fa;"><i class="fa-solid fa-server"></i> Compute & API</h4>
+                                    <p style="font-size: 11.5px; color: #cbd5e1; margin-top: 4px;">AWS ECS Fargate / Elastic Beanstalk hosting containerized REST API with Auto Scaling Group behind ALB.</p>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.06); padding: 14px; border-radius: var(--radius-sm); border-top: 3px solid #10b981;">
+                                    <h4 style="font-size: 13px; color: #34d399;"><i class="fa-solid fa-database"></i> Relational RDS</h4>
+                                    <p style="font-size: 11.5px; color: #cbd5e1; margin-top: 4px;">Amazon RDS PostgreSQL (db.t4g.micro) with Multi-AZ automated backups, WAL archiving, and Point-In-Time Recovery.</p>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.06); padding: 14px; border-radius: var(--radius-sm); border-top: 3px solid #f59e0b;">
+                                    <h4 style="font-size: 13px; color: #fbbf24;"><i class="fa-solid fa-leaf"></i> NoSQL & IoT</h4>
+                                    <p style="font-size: 11.5px; color: #cbd5e1; margin-top: 4px;">MongoDB Atlas (Free M0 Sandbox) / Amazon DocumentDB storing time-series tracking telemetry and audit logs.</p>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.06); padding: 14px; border-radius: var(--radius-sm); border-top: 3px solid #8b5cf6;">
+                                    <h4 style="font-size: 13px; color: #c084fc;"><i class="fa-solid fa-circle-nodes"></i> Graph & Routing</h4>
+                                    <p style="font-size: 11.5px; color: #cbd5e1; margin-top: 4px;">Neo4j AuraDB (Free Tier) / AWS Neptune for logistics corridor topologies and Dijkstra shortest path routing.</p>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.06); padding: 14px; border-radius: var(--radius-sm); border-top: 3px solid #ec4899;">
+                                    <h4 style="font-size: 13px; color: #f472b6;"><i class="fa-solid fa-bolt"></i> Caching Tier</h4>
+                                    <p style="font-size: 11.5px; color: #cbd5e1; margin-top: 4px;">Amazon ElastiCache for Redis (cache.t4g.micro) implementing Cache-Aside for product catalog and inventory lookups.</p>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.06); padding: 14px; border-radius: var(--radius-sm); border-top: 3px solid #06b6d4;">
+                                    <h4 style="font-size: 13px; color: #22d3ee;"><i class="fa-solid fa-box-archive"></i> Storage & Static</h4>
+                                    <p style="font-size: 11.5px; color: #cbd5e1; margin-top: 4px;">Amazon S3 for Proof-Of-Delivery (POD) photos, invoices, and digital signatures; CloudFront CDN for global delivery.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3>Cost-Effective Student Tier Strategy</h3>
+                        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-top: 6px;">
+                            For college academic demonstrations, using expensive enterprise cloud tiers is counterproductive.
+                            This project utilizes <strong>AWS Free Tier</strong> (750 hours/month of EC2/RDS t4g.micro, 5GB of S3 standard storage),
+                            combined with <strong>MongoDB Atlas M0 Free Cluster</strong> and <strong>Neo4j AuraDB Free Tier</strong>, achieving
+                            <strong>$0.00/month operational expense</strong> while demonstrating 100% genuine cloud database architecture.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================================================================
+                 TAB 8: VIVA EXAMINATION HUB
+                 ================================================================ -->
+            <section id="tab-viva" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2><i class="fa-solid fa-graduation-cap" style="color: var(--primary);"></i> College Viva Voce Defense & Concept Matrix</h2>
+                            <p>Prepared answers for external examiners covering all 10 core database concepts</p>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="vivaAccordionContainer" style="display: flex; flex-direction: column; gap: 12px;">
+                            <!-- Dynamically loaded viva Q&As -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modal for Adding Records -->
+    <div class="modal-overlay" id="addRecordModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add New Customer</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalFormContainer">
+                <!-- Dynamically generated form fields -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="submitModalForm()">Save Record</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

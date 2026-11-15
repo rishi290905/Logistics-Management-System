@@ -1,0 +1,29 @@
+{
+  "name": "logistics-management-system",
+  "version": "1.0.0",
+  "description": "Enterprise-grade Database-Centric Logistics Management System demonstrating Relational, NoSQL, Graph, Caching, Transactions, Security, and Cloud Architecture.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node database/seed_runner.js"
+  },
+  "keywords": [
+    "logistics",
+    "database-management-system",
+    "relational-database",
+    "postgresql",
+    "mysql",
+    "mongodb",
+    "nosql",
+    "neo4j",
+    "graph-database",
+    "redis",
+    "caching",
+    "acid-transactions",
+    "rbac-security"
+  ],
+  "author": "Antigravity Engineering",
+  "license": "MIT",
+  "dependencies": {}
+}
